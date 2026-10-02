@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Whack-a-worm!</title> 
+
+<style>
+    html,body { margin:0px; padding:0px; border:0px; background: rgb(0, 67, 4) }
+
+    div {width:360px; color:rgba(255, 255, 255, 0.795); margin:auto}
+
+   h1,p { text-align:center } 
+
+   table {background:tan; border-collapse:collapse}
+
+   td.hole {background:url( hole.pngs.png)}
+
+   td.rank { background:brown; color:white }
+
+   img.worm {visibility:hidden}
+
+</style>
+
+</head>
+
+<body>
+
+<div>
+
+<h1>Whack-a-worm!</h1>
+ 
+<p>A challenging fun game of skill and speed </p>
+
+<ul>
+
+<li>Worms will pop out of any hole TEN times</li>
+<li>Whack as many as you can-you must be QUICK</li>
+<li>hit the START button to begin playing...</li>
+
+</ul>
+<table>
+
+<tr>
+<td class="hole" >
+<img class="worm" src="worm.png" alt="worm"></td>
+<td class="hole" >
+<img class="worm" src="worm.png" alt="worm"></td>
+<td class="hole" >
+<img class="worm" src="worm.png" alt="worm"></td>
+</tr>
+
+<tr>
+<td class="hole" >
+<img class="worm" src="worm.png" alt="worm"></td>
+<td class="hole" >
+<img class="worm" src="worm.png" alt="worm"></td>
+<td class="hole" > 
+<img class="worm" src="worm.png" alt="worm"></td>                
+</tr>
+ 
+<tr>
+<td class="rank" colspan="3" >
+<button id="startbutton" >start</button>       
+Hits: <strong id="scoreboard" >0</strong></td>
+</tr>
+
+</table>
+
+<p>Author:
+<a href="https://www.ineasysteps.com">In Easy Steps</a>
+</p>
+
+</div>
+
+
+<script>
+var worms = document.getElementsByClassName( "worm" ) ;
+var board = document.getElementById( "scoreboard" ) ;
+var start = document.getElementById( "startbutton" ) ;
+
+start.addEventListener( "click" ,  startGame ) ;
+
+var i = 0 ;
+
+while( i < worms.length )
+{
+ worms[ i ].addEventListener( "mouseup", tapOrClick ) ;
+ worms[ i ].addEventListener( "touchend", tapOrClick ) ; 
+ i++ ;
+}
+
+function tapOrClick( event )
+{
+ event.preventDefault( ) ;
+ board.innerText = parseInt( board.innerText ) + 1 ;
+ return false ;  
+}
+
+function startGame()
+{
+ start.disabled = true ;
+ board.innerText = 0 ;
+ playGame( null, 0 ) ;  
+}
+
+function getRandom( min, max )
+{
+  return Math.floor( Math.random() * (max - min) + min ) ;
+}
+
+function playGame( saved, counter )
+{
+  var index = getRandom( 0, worms.length ) ;
+  
+  saved = index ;
+  counter++ ;
+
+  showWorm( index, counter ) ;
+}
+
+function showWorm( index, counter )
+{
+ worms[ index ].style.visibility="visible" ;  
+ //timer
+ setTimeout(
+
+ function()
+ {
+ worms[ index ].style.visibility="hidden" ;
+ playGame(  index, counter ) ;
+} , getRandom( 1000, 1500 )
+ ) ;
+}
+    
+
+// Last page of code
+
+function playGame( saved, counter )
+{
+ var index = getRandom( 0, worms.length ) ;
+ 
+ if( index === saved )
+ {
+  playGame( index, counter )  
+ }
+ else
+ {
+    if ( counter > 9 )
+{
+ board.innerText += " ... Game Over!" ;
+ start.disabled = false ;
+ return true ;
+}
+ else
+ {
+  counter++ ;
+  saved = index ;
+  showWorm( index, counter ) ;   
+ }
+}
+
+}
+
+
+
+
+
+
+</script>
+
+</body> 
+
+</html>
